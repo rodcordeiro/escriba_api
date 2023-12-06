@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    image: rodcordeiro/escriba:latest
+    container_name: escriba_api
+    restart: always
+    ports:
+      - '3334:80'
+    
+    environment:
+      NODE_ENV: production
+      PORT: ${PORT}
+      HOST: 0.0.0.0
+      ENC_SECRET: ${ENC_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_EXPIRES: ${JWT_EXPIRES}
+
+      EMAIL: ${EMAIL}
+      PASSWORD: ${PASSWORD}
+
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PWD: ${DB_PWD}
+      DB_NAME: ${DB_NAME}
+    networks:
+      - escriba
+
+
+networks:
+  escriba:
+    driver: bridge
