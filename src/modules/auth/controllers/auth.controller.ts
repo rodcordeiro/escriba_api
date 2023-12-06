@@ -27,7 +27,7 @@ export class AuthController {
   @ApiBody({
     schema: {
       properties: {
-        login: {
+        username: {
           type: 'string',
         },
         password: {
@@ -51,7 +51,7 @@ export class AuthController {
   @ApiBody({
     schema: {
       properties: {
-        login: {
+        username: {
           type: 'string',
         },
         refreshToken: {

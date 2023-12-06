@@ -1,8 +1,8 @@
-import { Column, Entity, BeforeInsert } from 'typeorm';
+import { Column, Entity, BeforeInsert, OneToMany, JoinColumn } from 'typeorm';
 import { hashSync } from 'bcrypt';
 
 import { BaseEntity } from '@/common/entities/base.entity';
-
+import { PostsEntity } from '@/modules/posts/entities/post.entity';
 
 @Entity({ name: 'escriba_tb_users' })
 export class UsersEntity extends BaseEntity {
@@ -17,7 +17,10 @@ export class UsersEntity extends BaseEntity {
   refreshToken: string;
 
   /** Joins */
-  
+  @OneToMany(() => PostsEntity, post => post.owner)
+  @JoinColumn()
+  posts?: PostsEntity[];
+
   /** Methods */
   @BeforeInsert()
   hash() {
