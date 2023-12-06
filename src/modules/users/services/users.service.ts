@@ -18,15 +18,14 @@ export class UsersService {
   ) {}
   async findAll() {
     return await this.usersRepository.find({
-      select: ['id',  'username', 'createdAt', 'updatedAt'],
+      select: ['id', 'username', 'createdAt', 'updatedAt'],
     });
   }
 
   async findBy(options: FindOneOptions<UsersEntity>['where']) {
     try {
-      console.log({ options });
       const user = await this.usersRepository.findOneOrFail({
-        select: ['id',  'username', 'createdAt', 'updatedAt'],
+        select: ['id', 'username', 'createdAt', 'updatedAt'],
         where: {
           ...options,
         },
