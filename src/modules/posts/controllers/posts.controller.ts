@@ -18,10 +18,10 @@ import { PostsService } from '../services/posts.service';
 import { CreatePostDTO } from '../dto/create.dto';
 
 @Auth()
-@ApiTags('Accounts')
+@ApiTags('Posts')
 @Controller({
   version: '1',
-  path: '/accounts',
+  path: '/posts',
 })
 export class PostsController {
   constructor(private readonly _service: PostsService) {}
