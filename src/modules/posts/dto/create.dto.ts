@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 const CreatePostSchema = z.object({
   title: z.string(),
-  text: z.number(),
+  text: z.string(),
 });
 
 export class CreatePostDTO extends createZodDto(CreatePostSchema) {
