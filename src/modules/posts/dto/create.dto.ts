@@ -1,13 +1,19 @@
-import { IsNotEmpty } from 'class-validator';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'nestjs-zod/z';
 import { ApiProperty } from '@nestjs/swagger';
-export class CreatePostDTO {
+
+const CreatePostSchema = z.object({
+  title: z.string(),
+  text: z.string(),
+});
+
+export class CreatePostDTO extends createZodDto(CreatePostSchema) {
+  /** Post title */
   @ApiProperty()
-  @IsNotEmpty()
   title: string;
 
+  /** Post content */
   @ApiProperty()
-  @IsNotEmpty()
   text: string;
 
-  owner: string;
 }

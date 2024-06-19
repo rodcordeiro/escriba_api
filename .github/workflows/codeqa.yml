@@ -1,13 +1,13 @@
-name: "Scan code quality"
+name: 'Scan code quality'
 
 on:
   push:
-    branches: ["main", "feat/**", "bug/**", "develop"]
+    branches: ['main', 'feat/**', 'bug/**', 'develop']
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main]
   schedule:
-    - cron: "0 3 * * 1"
+    - cron: '0 3 * * 1'
 
 jobs:
   CodeQuality:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["javascript"]
+        language: ['javascript']
 
     steps:
       - name: Checkout repository
@@ -28,22 +28,67 @@ jobs:
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-  # Audit:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Run NPM audit and create PR with result
-  #       uses: luisfontes19/npm-audit-action@v0.1.0
-  #       with:
-  #         fix: true # To create pull requests with npm audit fix
-  #         package-lock-only: false
-  #         force: true
-  #         github-token: ${{ secrets.GITHUB_TOKEN }} # github token to create the pull request. Here you need to have a secret named TOKEN.
+        uses: github/codeql-action/analyze@v3
+      
+      - name: Dockerfile Linter
+        uses: hadolint/hadolint-action@v3.1.0
+        id: hadolint
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
+      # - name: Update Pull Request
+      #   uses: actions/github-script@v6
+      #   if: github.event_name == 'pull_request'
+      #   with:
+      #     script: |
+      #       const output = `
+      #         #### Hadolint: \`${{ steps.hadolint.outcome }}\`
+      #           \`\`\`
+      #           ${process.env.HADOLINT_RESULTS}
+      #           \`\`\`
+      #           `;
+
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: output
+      #       })
+  ESLint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install ESLint
+        run: |
+          npm install eslint
+          npm install @microsoft/eslint-formatter-sarif@2.1.7
+
+      - name: Run ESLint
+        run: npx eslint src/
+          --config .eslintrc.js
+          --ext .js,.ts
+          --max-warnings 5
+          --format @microsoft/eslint-formatter-sarif
+          --output-file eslint-results.sarif
+        continue-on-error: true
+
+      - name: Upload analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true

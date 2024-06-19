@@ -22,7 +22,7 @@ import { LocalAuth, Reauth } from '@/common/decorators/auth.decorator';
   path: '/auth',
 })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly _authService: AuthService) {}
 
   @ApiBody({
     schema: {
@@ -39,13 +39,13 @@ export class AuthController {
   @LocalAuth()
   @HttpCode(HttpStatus.OK)
   @Post('/login')
-  async login(@Req() req: EscribaRequest) {
-    return this.authService.login(req.user);
+  async login(@Req() req: AuthenticatedRequest) {
+    return this._authService.login(req.user);
   }
 
   @Post('/register')
   async store(@Body() body: CreateUserDTO) {
-    return this.authService.register(body);
+    return this._authService.register(body);
   }
 
   @ApiBody({
@@ -63,7 +63,7 @@ export class AuthController {
   @Reauth()
   @Post('/refresh')
   async refresh(@Req() req: Authenticate.IAuthenticatedUser) {
-    return this.authService.reAuth({
+    return this._authService.reAuth({
       id: req.user.id,
       username: req.user.username,
     });

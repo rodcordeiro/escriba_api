@@ -20,5 +20,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"]
-    } }
+    },
+    "typeRoots": ["src/@types","./src/@types"]
+  }
 }
