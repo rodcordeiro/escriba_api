@@ -5,12 +5,7 @@ import { UsersModule } from '@/modules/users/users.module';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 @Module({
-  imports: [
-    HealthModule,
-    UsersModule,
-    AuthModule,
-    PostsModule,
-  ],
+  imports: [HealthModule, UsersModule, AuthModule, PostsModule],
   controllers: [],
   providers: [],
 })

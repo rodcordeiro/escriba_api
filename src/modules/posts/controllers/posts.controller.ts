@@ -37,10 +37,7 @@ export class PostsController {
   }
 
   @Post()
-  async create(
-    @Req() req: AuthenticatedRequest,
-    @Body() data: CreatePostDTO,
-  ) {
+  async create(@Req() req: AuthenticatedRequest, @Body() data: CreatePostDTO) {
     return this._service.store({ ...data, owner: req.user.id });
   }
 
