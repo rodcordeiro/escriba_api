@@ -27,8 +27,8 @@ export class PostsController {
   constructor(private readonly _service: PostsService) {}
 
   @Get()
-  async index() {
-    return await this._service.findAll();
+  async index(@Req() req: AuthenticatedRequest) {
+    return await this._service.findBy({ owner: req.user.id });
   }
 
   @Get('/:id')
