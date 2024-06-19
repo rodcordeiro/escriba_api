@@ -991,7 +991,6 @@
     webpack "5.90.1"
     webpack-node-externals "3.0.0"
 
-
 "@nestjs/common@^10.3.9":
   version "10.3.9"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.3.9.tgz#4e85d8fa6ae201a1c5f49d4d09b205bc3672ed1f"
@@ -1131,7 +1130,7 @@
   dependencies:
     uuid "9.0.1"
 
-"@nestjs/websockets@^10.3.8":
+"@nestjs/websockets@^10.3.9":
   version "10.3.9"
   resolved "https://registry.yarnpkg.com/@nestjs/websockets/-/websockets-10.3.9.tgz#60cdf2b6011f05ea391aa21ff3d0087ff92bcd17"
   integrity sha512-mKPIctbFoJ1BVYZL/sNlg0jWmkOTS0EIaJ5iULZvx83AA5K15kzettpQ3ls8u0qBsqbOe+ueqoDEpT1wHYKvyg==

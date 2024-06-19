@@ -16,7 +16,6 @@ export class UsersEntity extends BaseEntity {
   @Column({ select: false })
   password: string;
 
- 
   /** Joins */
 
   /** Methods */

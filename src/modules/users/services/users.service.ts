@@ -27,7 +27,7 @@ export class UsersService extends BaseService {
 
   async updateToken(id: string, refreshToken: string) {
     const user = await this.findOneBy({ id });
-    console.log(user,refreshToken)
+    console.log(user, refreshToken);
     // this._repository.merge(user, { refreshToken });
     // await this._repository.save(user);
   }

@@ -15,5 +15,4 @@ export class CreatePostDTO extends createZodDto(CreatePostSchema) {
   /** Post content */
   @ApiProperty()
   text: string;
-
 }
