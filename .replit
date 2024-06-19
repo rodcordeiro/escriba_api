@@ -1,5 +1,6 @@
 run = "npm run start:dev"
 hidden = [".config", "package-lock.json", "tsconfig.json"]
+modules = ["nodejs-20", "nix"]
 
 [packager]
 language = "nodejs"
@@ -9,7 +10,7 @@ language = "nodejs"
   guessImports = true
 
 [nix]
-channel = "stable-22_11"
+channel = "stable-23_11"
 
 [env]
 XDG_CONFIG_HOME = "$REPL_HOME/.config"
@@ -29,3 +30,7 @@ requiredFiles = [".replit", "replit.nix", ".config"]
 run = ["sh", "-c", "npm run start:dev"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
+
+[[ports]]
+localPort = 3333
+externalPort = 80

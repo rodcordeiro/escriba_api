@@ -1,9 +1,10 @@
+import 'newrelic';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { VersioningType } from '@nestjs/common';
 import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -18,15 +19,11 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({
       logger: true,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      async csrfProtection(req, reply, _done) {
-        const token = reply.generateCsrf();
-        console.log(token, req.headers);
-        return req.headers['csrf-token'];
-      },
     }),
   );
+
   AppUtils.killAppWithGrace(app);
+
   /**
    * ------------------------------------------------------
    * Security
@@ -56,7 +53,6 @@ async function bootstrap() {
     methods: '*',
   });
   app.enableShutdownHooks();
-  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
   app.enableVersioning({
     defaultVersion: '1',
@@ -69,13 +65,14 @@ async function bootstrap() {
    * ------------------------------------------------------
    */
   const config = new DocumentBuilder()
-    .setTitle('Escriba')
+    .setTitle('Escriba API')
     .setDescription('Escriba RestAPI documentation and examples')
     .setVersion(version)
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+
   SwaggerModule.setup('/swagger', app, document);
 
   await app.listen(process.env.PORT, '0.0.0.0', (err, address) => {

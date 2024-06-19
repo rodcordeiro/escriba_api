@@ -12,14 +12,14 @@ import { UsersService } from '@/modules/users/services/users.service';
   path: '/users',
 })
 export class UsersControllers {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly _usersService: UsersService) {}
 
   @Get()
   async index() {
-    return await this.usersService.findAll();
+    return await this._usersService.findAll();
   }
   @Get('/me')
-  async view(@Req() req: EscribaRequest) {
-    return this.usersService.findBy({ id: req.user.id });
+  async view(@Req() req: AuthenticatedRequest) {
+    return this._usersService.findBy({ id: req.user.id });
   }
 }

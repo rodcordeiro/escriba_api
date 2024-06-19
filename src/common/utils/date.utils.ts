@@ -24,7 +24,7 @@ export function addDays(date: string | Date, days: number): Date {
   return result;
 }
 
-interface iDateOptions {
+interface DateOptions {
   year: number;
   month: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   day: number;
@@ -46,14 +46,14 @@ export function convertDate(d: any) {
   return d.constructor === Date
     ? d
     : d.constructor === Array
-    ? new Date(d[0], d[1], d[2])
-    : d.constructor === Number
-    ? new Date(d as any)
-    : d.constructor === String
-    ? new Date(d as string)
-    : typeof d === 'object'
-    ? new Date(d.year, d.month, d.date)
-    : NaN;
+      ? new Date(d[0], d[1], d[2])
+      : d.constructor === Number
+        ? new Date(d as any)
+        : d.constructor === String
+          ? new Date(d as string)
+          : typeof d === 'object'
+            ? new Date(d.year, d.month, d.date)
+            : NaN;
 }
 
 /**
@@ -71,8 +71,8 @@ function above) and returns:
  NOTE: The code inside isFinite does an assignment (=).
  */
 export function compareDates(
-  a: string | Date | number | iDateOptions,
-  b: string | Date | number | iDateOptions,
+  a: string | Date | number | DateOptions,
+  b: string | Date | number | DateOptions,
 ) {
   // eslint-disable-next-line no-return-assign
   return Number.isFinite((a = convertDate(a).valueOf())) &&
@@ -95,9 +95,9 @@ Checks if date in d is between dates in start and end.
  */
 
 export function isInRange(
-  d: string | Date | number | iDateOptions,
-  start: string | Date | number | iDateOptions,
-  end: string | Date | number | iDateOptions,
+  d: string | Date | number | DateOptions,
+  start: string | Date | number | DateOptions,
+  end: string | Date | number | DateOptions,
 ) {
   return Number.isFinite((d = convertDate(d).valueOf())) &&
     Number.isFinite((start = convertDate(start).valueOf())) &&

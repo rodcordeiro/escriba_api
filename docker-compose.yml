@@ -2,32 +2,20 @@ version: '3.8'
 
 services:
   api:
-    image: rodcordeiro/escriba:latest
+    image: rodcordeiro/escriba-api:latest
     container_name: escriba_api
-    restart: always
+    restart: unless-stopped
     ports:
-      - '3334:80'
-    
-    environment:
-      NODE_ENV: production
-      PORT: ${PORT}
-      HOST: 0.0.0.0
-      ENC_SECRET: ${ENC_SECRET}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      JWT_EXPIRES: ${JWT_EXPIRES}
-
-      EMAIL: ${EMAIL}
-      PASSWORD: ${PASSWORD}
-
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
-      DB_PWD: ${DB_PWD}
-      DB_NAME: ${DB_NAME}
+      - '3341:80'
+    env_file:
+      - .env
     networks:
       - escriba
-
+    logging:
+      driver: "json-file"  # You can choose a different driver if needed
+      options:
+        max-size: "2m"  # Maximum size of a single log file
+        max-file: "2"    # Maximum number of log files to retain
 
 networks:
   escriba:

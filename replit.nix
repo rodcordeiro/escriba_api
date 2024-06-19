@@ -1,10 +1,10 @@
 { pkgs }: {
-    deps = [
-        pkgs.yarn
-        pkgs.esbuild
-        pkgs.nodejs-18_x
+  deps = [
+    pkgs.nodejs_latest
+    pkgs.yarn
+    pkgs.esbuild
 
-        pkgs.nodePackages.typescript
-        pkgs.nodePackages.typescript-language-server
-    ];
+    pkgs.nodePackages.typescript
+    pkgs.nodePackages.typescript-language-server
+  ];
 }

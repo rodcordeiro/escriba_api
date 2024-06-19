@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseUUIDPipe,
   Post,
   Put,
   Req,
@@ -15,44 +14,48 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { Auth } from '@/common/decorators/auth.decorator';
 
-import { PostsService } from '@/modules/posts/services/posts.service';
-import { CreatePostDTO } from '@/modules/posts/dto/create.dto';
-import { UpdatePostDTO } from '@/modules/posts/dto/update.dto';
+import { PostsService } from '../services/posts.service';
+import { CreatePostDTO } from '../dto/create.dto';
 
 @Auth()
-@ApiTags('Posts')
+@ApiTags('Accounts')
 @Controller({
   version: '1',
-  path: '/posts',
+  path: '/accounts',
 })
-export class PostsControllers {
-  constructor(private readonly postsServices: PostsService) {}
+export class PostsController {
+  constructor(private readonly _service: PostsService) {}
 
   @Get()
-  async index(@Req() req: EscribaRequest) {
-    return await this.postsServices.list(req.user.id);
+  async index() {
+    return await this._service.findAll();
   }
+
   @Get('/:id')
-  async view(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.postsServices.findOneBy({ id });
+  async view(@Param('id') id: string) {
+    return this._service.findOneBy({ id });
   }
+
   @Post()
-  @HttpCode(HttpStatus.CREATED)
-  async create(@Req() req: EscribaRequest, @Body() body: CreatePostDTO) {
-    return this.postsServices.store({ ...body, owner: req.user.id });
-  }
-
-  @Put(':id')
-  async update(
-    @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() body: UpdatePostDTO,
+  async create(
+    @Req() req: AuthenticatedRequest,
+    @Body() data: CreatePostDTO,
   ) {
-    return this.postsServices.update(id, body);
+    return this._service.store({ ...data, owner: req.user.id });
   }
 
-  @Delete(':id')
+  @Put('/:id')
+  async update(
+    @Req() req: AuthenticatedRequest,
+    @Param('id') id: string,
+    @Body() data: Partial<CreatePostDTO>,
+  ) {
+    return this._service.update(id, { ...data, owner: req.user.id });
+  }
+
+  @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.postsServices.delete(id);
+  async remove(@Param('id') id: string) {
+    return this._service.destroy(id);
   }
 }

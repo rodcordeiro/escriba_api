@@ -1,25 +1,23 @@
-import { Column, Entity, BeforeInsert, OneToMany, JoinColumn } from 'typeorm';
+import { Column, Entity, BeforeInsert } from 'typeorm';
 import { hashSync } from 'bcrypt';
 
 import { BaseEntity } from '@/common/entities/base.entity';
-import { PostsEntity } from '@/modules/posts/entities/post.entity';
 
-@Entity({ name: 'escriba_tb_users' })
+@Entity('es_tb_user')
 export class UsersEntity extends BaseEntity {
   /** Columns */
+
+  @Column()
+  name: string;
+
   @Column()
   username: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
-  refreshToken: string;
-
+ 
   /** Joins */
-  @OneToMany(() => PostsEntity, post => post.owner)
-  @JoinColumn()
-  posts?: PostsEntity[];
 
   /** Methods */
   @BeforeInsert()
